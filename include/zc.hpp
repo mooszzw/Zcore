@@ -27,7 +27,9 @@ T input()
 {
     T t;
     cin >> t;
-    return t;}
+    return t;
+}
+
 template<>
 bool input()
 {
@@ -36,29 +38,29 @@ bool input()
     return s == "true" || s == "1";
 }
 
-// 为std::any类型提供输入处理
+// 为std::any类型提供输入处理，自动推断类型
 template<>
 var input()
 {
-    string type, value;
-    cout << "请输入类型(int, double, string, bool, char, const char*): ";
-    cin >> type;
+    string value;
     cout << "请输入值: ";
     cin >> value;
 
-    if (type == "int") {return stoi(value);}
-    else if (type == "double") {return stod(value);}
-    else if (type == "string") {return value;}
-    else if (type == "bool")
-    {
-        if (value == "true" || value == "1") return true;
-        else return false;
-    }
-    else if (type == "char") {return value[0];}
-    else if (type == "const char*") {return value.c_str();}
-    else
-    {
-        cout << "[错误] 未知类型：" << type << endl;
-        return var();
-    }
+    // 尝试转换为int
+    try {return stoi(value);}
+    catch (...) {}
+
+    // 尝试转换为double
+    try {return stod(value);}
+    catch (...) {}
+
+    // 尝试转换为bool
+    if (value == "true" || value == "1") return true;
+    else if (value == "false" || value == "0") return false;
+
+    // 尝试转换为char，如果value长度为1
+    if (value.size() == 1) return value[0];
+
+    // 默认情况下，作为string处理
+    return value;
 }
