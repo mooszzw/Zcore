@@ -1,8 +1,4 @@
 #include "lib/zecode.h"
+#include <vector>
 using namespace std;
-
-int main() {
-    output("hello");
-    var x = input<int>();
-    return 0;
-}
+int main() {return 0;}
